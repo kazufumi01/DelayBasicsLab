@@ -1,6 +1,6 @@
 # Mac(.pkg) と Windows(.exe) のインストーラーをクラウドでビルドする
 # - 「Actions」タブから手動実行 → Artifacts からダウンロード（テスト用）
-# - v1.0.0 のようなタグを push → GitHub Releases に両方を自動添付（配布用）
+# - v0.1.0 のようなタグを push → GitHub Releases に両方を自動添付（配布用）
 name: Build installers
 
 on:

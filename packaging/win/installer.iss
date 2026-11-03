@@ -1,9 +1,9 @@
 ﻿; Delay Basics Lab — Windows インストーラー（Inno Setup 6）
-; GitHub Actions から:  iscc /DMyAppVersion=1.0.0 /DArtDir=..\..\build\DelayBasicsLab_artefacts\Release packaging\win\installer.iss
+; GitHub Actions から:  iscc /DMyAppVersion=0.1.0 /DArtDir=..\..\build\DelayBasicsLab_artefacts\Release packaging\win\installer.iss
 ; 出力: dist\DelayBasicsLab-<ver>-win64.exe （コード署名なし）
 
 #ifndef MyAppVersion
-  #define MyAppVersion "1.0.0"
+  #define MyAppVersion "0.1.0"
 #endif
 #ifndef ArtDir
   #define ArtDir "..\..\build\DelayBasicsLab_artefacts\Release"

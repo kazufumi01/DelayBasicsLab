@@ -39,5 +39,5 @@ if [ "$COPY" = "ON" ]; then
   echo "完了：Ableton Live で Plug-Ins を再スキャンしてください"
 else
   echo "完了（コピーなし）：成果物は build/DelayBasicsLab_artefacts/Release/"
-  echo "配布用 .pkg を作るには： packaging/mac/build_pkg.sh 1.0.0"
+  echo "配布用 .pkg を作るには： packaging/mac/build_pkg.sh 0.1.0"
 fi
