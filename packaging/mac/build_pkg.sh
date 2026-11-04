@@ -7,7 +7,7 @@
 set -e
 cd "$(dirname "$0")/../.."
 
-VERSION="${1:-0.1.0}"
+VERSION="${1:-0.1.1}"
 ART="${2:-build/DelayBasicsLab_artefacts/Release}"
 NAME="Delay Basics Lab"
 ID="com.jpk.delaybasicslab"

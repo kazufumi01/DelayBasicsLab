@@ -3,7 +3,7 @@
 ; 出力: dist\DelayBasicsLab-<ver>-win64.exe （コード署名なし）
 
 #ifndef MyAppVersion
-  #define MyAppVersion "0.1.0"
+  #define MyAppVersion "0.1.1"
 #endif
 #ifndef ArtDir
   #define ArtDir "..\..\build\DelayBasicsLab_artefacts\Release"
