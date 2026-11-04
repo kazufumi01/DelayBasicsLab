@@ -59,7 +59,7 @@ inline const PresetTextEN& presetTextEN (int index)
 }
 
 // UI の短い文言
-enum class UiText { WhatHappens, WhereToUse, WhatToListen, Footer, ColParam, ColPreset, ColNow, Changed, SameAsPreset, Locked };
+enum class UiText { WhatHappens, WhereToUse, WhatToListen, Footer, ColParam, ColPreset, ColPresetCol, ColNow, Changed, SameAsPreset, Locked };
 
 inline juce::String ui (UiText key, Lang lang)
 {
@@ -80,6 +80,7 @@ inline juce::String ui (UiText key, Lang lang)
                         "Touching Time while synced releases SYNC so you can fine-tune from that note value in ms.";
         case UiText::ColParam:     return ja ? jp ("パラメーター") : "Parameter";
         case UiText::ColPreset:    return ja ? jp ("初期値：")     : "Preset: ";
+        case UiText::ColPresetCol: return ja ? jp ("初期値")       : "Preset";
         case UiText::ColNow:       return ja ? jp ("現在値")       : "Now";
         case UiText::Changed:      return ja ? jp ("個 変更")      : " changed";
         case UiText::SameAsPreset: return ja ? jp ("= 初期値")     : "= preset";

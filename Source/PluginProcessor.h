@@ -54,6 +54,9 @@ public:
     }
     void setLanguage (Lang l) { apvts.state.setProperty ("lang", (int) l, nullptr); }
 
+    // 画面の大きさなど（ScalingEditor が "zoom" を読み書きする。セッションに保存）
+    juce::ValueTree uiState { "UI" };
+
     static juce::AudioProcessorValueTreeState::ParameterLayout createLayout();
 
 private:

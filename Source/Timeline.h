@@ -1,6 +1,7 @@
 #pragma once
 #include <juce_gui_basics/juce_gui_basics.h>
 #include "DelayEngine.h"
+#include "Theme.h"
 
 // =============================================================================
 //  エコーのタイムライン（ブラウザ版の draw() の移植）
@@ -19,8 +20,10 @@ public:
     void paint (juce::Graphics& g) override
     {
         auto area = getLocalBounds().toFloat();
-        g.setColour (juce::Colour (0xff101215));
-        g.fillRoundedRectangle (area, 10.0f);
+        g.setColour (theme::well);
+        g.fillRoundedRectangle (area, 6.0f);
+        g.setColour (theme::line);
+        g.drawRoundedRectangle (area.reduced (0.5f), 6.0f, 1.0f);
 
         struct Tap { float t, a; int lane; int n; };   // lane: 0=L 1=R 2=両方
         std::vector<Tap> taps;
@@ -68,11 +71,11 @@ public:
         const float laneH = (area.getHeight() - top - bottom) / 2.0f;
         auto x = [&] (float t) { return padL + (area.getWidth() - padL - padR) * t / win; };
 
-        g.setFont (juce::Font (juce::FontOptions (11.0f)));
-        g.setColour (juce::Colour (0xff6d7480));
+        g.setFont (theme::mono (10.0f));
+        g.setColour (theme::faint);
         g.drawText ("L", 6, (int) (top + laneH / 2 - 7), 14, 14, juce::Justification::centred);
         g.drawText ("R", 6, (int) (top + laneH * 1.5f - 7), 14, 14, juce::Justification::centred);
-        g.setColour (juce::Colour (0xff2a2f38));
+        g.setColour (theme::line);
         g.drawHorizontalLine ((int) (top + laneH + 2), padL, area.getWidth() - padR);
 
         // 拍の線（オレンジ）
@@ -83,7 +86,7 @@ public:
             {
                 const bool isBeat = (k % 4 == 0);
                 if (! isBeat && win > beat * 3) continue;
-                g.setColour (juce::Colour (0xfff0a63a).withAlpha (isBeat ? 0.4f : 0.18f));
+                g.setColour (theme::accent.withAlpha (isBeat ? 0.4f : 0.18f));
                 g.drawVerticalLine ((int) x (beat / 4 * k), top, area.getHeight() - bottom);
             }
         }
@@ -92,7 +95,7 @@ public:
         const float steps[] = { 1, 2, 5, 10, 20, 50, 100, 200, 250, 500, 1000 };
         float step = 1000.0f;
         for (auto st : steps) if (win / st <= 8.0f) { step = st; break; }
-        g.setColour (juce::Colour (0xff6d7480));
+        g.setColour (theme::faint);
         for (float t = 0.0f; t <= win; t += step)
             g.drawText (juce::String ((int) t) + "ms",
                         juce::jlimit (0, (int) area.getWidth() - 54, (int) x (t) - 25), (int) (area.getHeight() - 18), 50, 14,
@@ -115,9 +118,9 @@ public:
         // 原音
         if (! s.wetOnly)
         {
-            bar (0.0f, 1.0f, 0, juce::Colour (0xff8b929c), 0);
+            bar (0.0f, 1.0f, 0, theme::muted, 0);
             if (s.mode != DelayMode::Haas)
-                bar (0.0f, 1.0f, 1, juce::Colour (0xff8b929c), 0);
+                bar (0.0f, 1.0f, 1, theme::muted, 0);
         }
 
         // エコー：ループ内フィルターの累積で色を暗くする
@@ -129,15 +132,15 @@ public:
                 const float hh = 1.0f / std::sqrt (1.0f + std::pow (s.hpHz / 250.0f, 4.0f));
                 return 0.25f + 0.75f * std::pow (h * hh, (float) n);
             };
-            const auto dark = juce::Colour (0xff282c34);
+            const auto dark = theme::zero;
             for (auto& tp : taps)
             {
                 if (tp.t > win) continue;
                 const float k = shade (tp.n);
                 if (tp.lane == 0 || tp.lane == 2)
-                    bar (tp.t, tp.a, 0, dark.interpolatedWith (juce::Colour (0xff62b6ea), k), tp.n);
+                    bar (tp.t, tp.a, 0, dark.interpolatedWith (theme::laneL, k), tp.n);
                 if (tp.lane == 1 || tp.lane == 2)
-                    bar (tp.t, tp.a, 1, dark.interpolatedWith (juce::Colour (0xffec7a92), k), tp.n);
+                    bar (tp.t, tp.a, 1, dark.interpolatedWith (theme::laneR, k), tp.n);
             }
         }
     }

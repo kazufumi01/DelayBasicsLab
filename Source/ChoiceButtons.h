@@ -45,8 +45,9 @@ public:
         const int n = buttons.size();
         for (int i = 0; i < n; ++i)
         {
-            const int x0 = r.getX() + r.getWidth() * i / n;
-            const int x1 = r.getX() + r.getWidth() * (i + 1) / n;
+            const int gap = 3;                       // ボタン同士の隙間（EQ Anatomy と同じ見え方）
+            const int x0 = r.getX() + (r.getWidth() + gap) * i / n;
+            const int x1 = r.getX() + (r.getWidth() + gap) * (i + 1) / n - gap;
             buttons[i]->setBounds (x0, r.getY(), x1 - x0, r.getHeight());
             int edges = 0;
             if (i > 0)     edges |= juce::Button::ConnectedOnLeft;

@@ -1,17 +1,26 @@
 #pragma once
 #include <juce_audio_processors/juce_audio_processors.h>
 #include "PluginProcessor.h"
+#include "Theme.h"
+#include "ScalingEditor.h"
 #include "Timeline.h"
 #include "ChoiceButtons.h"
 #include "ParamCompare.h"
 #include "FineSlider.h"
 
-class DelayBasicsLabEditor : public juce::AudioProcessorEditor,
-                             private juce::Timer
+// =============================================================================
+//  画面（1000 × 700 を基準に、ウィンドウ全体を拡大・縮小）
+//    header 44 · PRESET · SAMPLE / MODE · 解説（広い）｜初期値の比較（狭い）
+//    · タイムライン · ノブ＋スイッチ · SYNC L / R
+// =============================================================================
+class DelayBasicsLabView : public juce::Component,
+                           private juce::Timer
 {
 public:
-    explicit DelayBasicsLabEditor (DelayBasicsLabProcessor&);
-    ~DelayBasicsLabEditor() override;
+    ZoomButton zoom;                       // ScalingEditor が操作する「100%」ボタン
+
+    explicit DelayBasicsLabView (DelayBasicsLabProcessor&);
+    ~DelayBasicsLabView() override;
 
     void paint (juce::Graphics&) override;
     void resized() override;
@@ -32,23 +41,30 @@ private:
     };
 
     DelayBasicsLabProcessor& proc;
-    juce::LookAndFeel_V4 lnf;
+    theme::LookAndFeel lnf;
 
-    juce::Label title, signature, bpmLabel;
     juce::Label presetTitle, sampleTitle, modeTitle, syncLTitle, syncRTitle;
-
-    ChoiceButtons presetButtons, sampleButtons, modeButtons, syncLButtons, syncRButtons, langButtons;
+    ChoiceButtons presetButtons, sampleButtons, modeButtons, syncLButtons, syncRButtons;
+    juce::TextButton langBtn;
 
     juce::TextEditor explain;
     ParamCompare compare;     // プリセット初期値 ⇔ 現在値
     Timeline timeline;
 
     Knob timeL, timeR, feedback, hp, lp, rate, depth, wet;
-    juce::ToggleButton delayOff { "Bypass" }, wetOnly { "Wet Only" }, wetLock { "Wet Lock" }, monoCheck { "Mono" };
+    juce::TextButton delayOff { "Bypass" }, wetOnly { "Wet Only" }, wetLock { "Wet Lock" }, monoCheck { "Mono" };
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> offAtt, wetOnlyAtt, wetLockAtt, monoAtt;
 
     int shownPreset = -1;
+    juce::String readout;
     juce::Rectangle<int> knobPanel;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DelayBasicsLabEditor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DelayBasicsLabView)
+};
+
+class DelayBasicsLabEditor : public ScalingEditor<DelayBasicsLabView, DelayBasicsLabProcessor>
+{
+public:
+    explicit DelayBasicsLabEditor (DelayBasicsLabProcessor& p)
+        : ScalingEditor (p, 1000, 700, "delaybasicslab.zoom") {}
 };

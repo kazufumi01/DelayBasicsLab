@@ -3,6 +3,7 @@
 #include "Params.h"
 #include "Presets.h"
 #include "Localisation.h"
+#include "Theme.h"
 
 // =============================================================================
 //  ParamCompare：プリセットの初期値と、いま触っている値を並べて比較する表
@@ -71,63 +72,62 @@ public:
     void paint (juce::Graphics& g) override
     {
         auto r = getLocalBounds().toFloat();
-        g.setColour (juce::Colour (0xff1e2128));
-        g.fillRoundedRectangle (r, 10.0f);
-        g.setColour (juce::Colour (0xff323844));
-        g.drawRoundedRectangle (r.reduced (0.5f), 10.0f, 1.0f);
+        g.setColour (theme::panel);
+        g.fillRoundedRectangle (r, 6.0f);
+        g.setColour (theme::line);
+        g.drawRoundedRectangle (r.reduced (0.5f), 6.0f, 1.0f);
 
-        auto area = getLocalBounds().reduced (8, 4);
-        const int n = (int) rows.size() + 1;
+        auto area = getLocalBounds().reduced (10, 6);
+        const int n = (int) rows.size() + 2;              // タイトル行 ＋ 列見出し ＋ 各行
         const int rowH = juce::jmax (11, area.getHeight() / n);
-        const int c0 = area.getWidth() * 26 / 100, c1 = area.getWidth() * 26 / 100,
-                  c2 = area.getWidth() * 26 / 100;
+        const float fs = juce::jmin (12.0f, (float) rowH * 0.74f);
+        const int c0 = area.getWidth() * 30 / 100, c1 = area.getWidth() * 24 / 100,
+                  c2 = area.getWidth() * 24 / 100;
 
         int changedCount = 0;
         for (auto& row : rows) if (row.changed) ++changedCount;
 
-        // 見出し
-        auto head = area.removeFromTop (rowH);
-        g.setFont (font ((float) rowH * 0.72f, true));
-        g.setColour (juce::Colour (0xff9ba2ad));
-        g.drawText (ui (UiText::ColParam, lang), head.removeFromLeft (c0), juce::Justification::centredLeft);
-        g.drawText (ui (UiText::ColPreset, lang) + presetName, head.removeFromLeft (c1), juce::Justification::centredLeft);
-        g.setColour (juce::Colour (0xffece9e3));
-        g.drawText (ui (UiText::ColNow, lang), head.removeFromLeft (c2), juce::Justification::centredLeft);
-        g.setColour (changedCount > 0 ? juce::Colour (0xfff0a63a) : juce::Colour (0xff7fd3a0));
-        g.drawText (changedCount > 0 ? juce::String (changedCount) + ui (UiText::Changed, lang) : ui (UiText::SameAsPreset, lang),
-                    head, juce::Justification::centredRight);
+        // タイトル行：初期値：<プリセット名> …… n個 変更 / = 初期値
+        auto title = area.removeFromTop (rowH);
+        g.setFont (theme::ui (fs, true));
+        g.setColour (changedCount > 0 ? theme::accent : theme::green);
+        const auto status = changedCount > 0 ? juce::String (changedCount) + ui (UiText::Changed, lang)
+                                             : ui (UiText::SameAsPreset, lang);
+        g.drawText (status, title, juce::Justification::centredRight);
+        g.setColour (theme::text);
+        g.drawText (ui (UiText::ColPreset, lang) + presetName,
+                    title.withTrimmedRight (juce::roundToInt (fs * 6.0f)), juce::Justification::centredLeft);
 
-        g.setFont (font ((float) rowH * 0.72f, false));
+        // 列見出し
+        auto head = area.removeFromTop (rowH);
+        g.setFont (theme::ui (fs * 0.92f));
+        g.setColour (theme::faint);
+        g.drawText (ui (UiText::ColParam, lang),     head.removeFromLeft (c0), juce::Justification::centredLeft);
+        g.drawText (ui (UiText::ColPresetCol, lang), head.removeFromLeft (c1), juce::Justification::centredLeft);
+        g.drawText (ui (UiText::ColNow, lang),       head.removeFromLeft (c2), juce::Justification::centredLeft);
+        g.setColour (theme::line);
+        g.drawHorizontalLine (head.getBottom(), (float) area.getX(), (float) area.getRight());
+
         for (auto& row : rows)
         {
             auto line = area.removeFromTop (rowH);
             if (row.changed)
             {
-                g.setColour (juce::Colour (0x33f0a63a));
+                g.setColour (theme::accent.withAlpha (0.14f));
                 g.fillRect (line.toFloat().expanded (4.0f, 0.0f));
             }
-            g.setColour (juce::Colour (0xff9ba2ad));
-            g.drawText (row.name,   line.removeFromLeft (c0), juce::Justification::centredLeft);
-            g.drawText (row.preset, line.removeFromLeft (c1), juce::Justification::centredLeft);
-            g.setColour (row.changed ? juce::Colour (0xfff0a63a) : juce::Colour (0xffece9e3));
-            g.drawText (row.now,    line.removeFromLeft (c2), juce::Justification::centredLeft);
-            g.drawText (row.diff,   line, juce::Justification::centredRight);
+            g.setFont (theme::ui (fs));
+            g.setColour (theme::muted);
+            g.drawText (row.name, line.removeFromLeft (c0), juce::Justification::centredLeft);
+            g.setFont (theme::mono (fs * 0.95f));
+            g.drawFittedText (row.preset, line.removeFromLeft (c1), juce::Justification::centredLeft, 1, 0.8f);
+            g.setColour (row.changed ? theme::accent : theme::text);
+            g.drawFittedText (row.now,    line.removeFromLeft (c2), juce::Justification::centredLeft, 1, 0.8f);
+            g.drawFittedText (row.diff,   line, juce::Justification::centredRight, 1, 0.8f);
         }
     }
 
 private:
-    static juce::Font font (float size, bool bold)
-    {
-       #if JUCE_MAC
-        return juce::Font (juce::FontOptions ("Hiragino Sans", size, bold ? juce::Font::bold : juce::Font::plain));
-       #elif JUCE_WINDOWS
-        // Windows 標準の日本語UIフォント（英語版Windowsにも入っている）
-        return juce::Font (juce::FontOptions ("Yu Gothic UI", size, bold ? juce::Font::bold : juce::Font::plain));
-       #else
-        return juce::Font (juce::FontOptions (size, bold ? juce::Font::bold : juce::Font::plain));
-       #endif
-    }
-
     struct Row
     {
         juce::String name, preset, now, diff;

@@ -23,27 +23,33 @@ APVTS::ParameterLayout DelayBasicsLabProcessor::createLayout()
     auto rateRange = juce::NormalisableRange<float> (0.05f, 6.0f, 0.01f);
     rateRange.setSkewForCentre (0.8f);
 
-    p.push_back (std::make_unique<juce::AudioParameterChoice> (pid (ParamID::mode), "Mode", modeNames(), 0));
-    p.push_back (std::make_unique<juce::AudioParameterFloat>  (pid (ParamID::timeL), "Time L", msRange, 110.0f,
+    // 新規に立ち上げた時の値＝プリセット「Default」の値（比較表が「= 初期値」から始まるように）
+    // ※ Time の初期値はテンポ同期（1/4）中の 120BPM 換算。同期中は実際のテンポに追従する。
+    const auto& d = factoryPresets().front();
+
+    p.push_back (std::make_unique<juce::AudioParameterChoice> (pid (ParamID::mode), "Mode", modeNames(), (int) d.mode));
+    p.push_back (std::make_unique<juce::AudioParameterFloat>  (pid (ParamID::timeL), "Time L", msRange,
+                    (float) resolveTimeMs (d.syncL, d.timeL, 120.0),
                     juce::AudioParameterFloatAttributes().withLabel ("ms")));
-    p.push_back (std::make_unique<juce::AudioParameterFloat>  (pid (ParamID::timeR), "Time R", msRange, 110.0f,
+    p.push_back (std::make_unique<juce::AudioParameterFloat>  (pid (ParamID::timeR), "Time R", msRange,
+                    (float) resolveTimeMs (d.syncR, d.timeR, 120.0),
                     juce::AudioParameterFloatAttributes().withLabel ("ms")));
-    p.push_back (std::make_unique<juce::AudioParameterChoice> (pid (ParamID::syncL), "Sync L", syncNames(), 0));
-    p.push_back (std::make_unique<juce::AudioParameterChoice> (pid (ParamID::syncR), "Sync R", syncNames(), 0));
+    p.push_back (std::make_unique<juce::AudioParameterChoice> (pid (ParamID::syncL), "Sync L", syncNames(), d.syncL));
+    p.push_back (std::make_unique<juce::AudioParameterChoice> (pid (ParamID::syncR), "Sync R", syncNames(), d.syncR));
     p.push_back (std::make_unique<juce::AudioParameterFloat>  (pid (ParamID::feedback), "Feedback",
-                    juce::NormalisableRange<float> (0.0f, 95.0f, 0.1f), 5.0f,
+                    juce::NormalisableRange<float> (0.0f, 95.0f, 0.1f), d.feedbackPct,
                     juce::AudioParameterFloatAttributes().withLabel ("%")));
-    p.push_back (std::make_unique<juce::AudioParameterFloat>  (pid (ParamID::hp), "High Pass", hpRange, 200.0f,
+    p.push_back (std::make_unique<juce::AudioParameterFloat>  (pid (ParamID::hp), "High Pass", hpRange, d.hp,
                     juce::AudioParameterFloatAttributes().withLabel ("Hz")));
-    p.push_back (std::make_unique<juce::AudioParameterFloat>  (pid (ParamID::lp), "Low Pass", lpRange, 5000.0f,
+    p.push_back (std::make_unique<juce::AudioParameterFloat>  (pid (ParamID::lp), "Low Pass", lpRange, d.lp,
                     juce::AudioParameterFloatAttributes().withLabel ("Hz")));
-    p.push_back (std::make_unique<juce::AudioParameterFloat>  (pid (ParamID::rate), "Mod Rate", rateRange, 0.5f,
+    p.push_back (std::make_unique<juce::AudioParameterFloat>  (pid (ParamID::rate), "Mod Rate", rateRange, d.rate,
                     juce::AudioParameterFloatAttributes().withLabel ("Hz")));
     p.push_back (std::make_unique<juce::AudioParameterFloat>  (pid (ParamID::depth), "Mod Depth",
-                    juce::NormalisableRange<float> (0.0f, 5.0f, 0.01f), 0.0f,
+                    juce::NormalisableRange<float> (0.0f, 5.0f, 0.01f), d.depth,
                     juce::AudioParameterFloatAttributes().withLabel ("ms")));
     p.push_back (std::make_unique<juce::AudioParameterFloat>  (pid (ParamID::wet), "Wet",
-                    juce::NormalisableRange<float> (-30.0f, 0.0f, 0.1f), -9.0f,
+                    juce::NormalisableRange<float> (-30.0f, 0.0f, 0.1f), d.wetDb,
                     juce::AudioParameterFloatAttributes().withLabel ("dB")));
     p.push_back (std::make_unique<juce::AudioParameterBool>   (pid (ParamID::delayOff),  "Bypass",     false));
     p.push_back (std::make_unique<juce::AudioParameterBool>   (pid (ParamID::wetOnly),   "Wet Only",   false));
@@ -230,6 +236,8 @@ void DelayBasicsLabProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
     auto state = apvts.copyState();
     state.setProperty ("program", currentProgram, nullptr);
+    state.removeChild (state.getChildWithName (uiState.getType()), nullptr);
+    state.addChild (uiState.createCopy(), -1, nullptr);
     if (auto xml = state.createXml())
         copyXmlToBinary (*xml, destData);
 }
@@ -241,6 +249,12 @@ void DelayBasicsLabProcessor::setStateInformation (const void* data, int sizeInB
         {
             auto tree = juce::ValueTree::fromXml (*xml);
             currentProgram = (int) tree.getProperty ("program", 0);
+            const auto savedUi = tree.getChildWithName (uiState.getType());
+            if (savedUi.isValid())
+            {
+                uiState.copyPropertiesFrom (savedUi, nullptr);
+                tree.removeChild (savedUi, nullptr);
+            }
             apvts.replaceState (tree);
         }
 }
