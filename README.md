@@ -1,5 +1,23 @@
 # Delay Basics Lab（JUCE プラグイン版）
 
+by Johan Plus Kei — ディレイの基本用途を、触りながら学べる無料プラグイン（AU / VST3 / Standalone）
+
+## ⬇️ ダウンロード（ベータ版）/ Download (Beta)
+
+**[最新版をダウンロード / Download latest](https://github.com/kazufumi01/DelayBasicsLab/releases/latest)** — 無料 / Free
+
+| | 手動インストール（おすすめ） | インストーラー |
+|---|---|---|
+| **Mac**（macOS 11+, Apple Silicon / Intel） | `…-mac.zip` | `…-mac.pkg` |
+| **Windows**（10 / 11, 64bit）⚠️未検証 | `…-win64.zip` | `…-win64.exe` |
+
+- インストール方法：**[INSTALL.md](INSTALL.md)**（日本語 / English）
+- ⚠️ **Windows 版はビルドのみ確認済みで、実機での動作確認はできていません。** / The Windows build is untested on real hardware.
+- Apple の公証・Windows のコード署名をしていないため、初回のみ警告が出ます（回避手順は INSTALL.md）。
+- 不具合・要望は [Issues](https://github.com/kazufumi01/DelayBasicsLab/issues) へ。
+
+---
+
 ブログ用Webアプリ「ディレイ基本用途ラボ」を AU / VST3 / Standalone にしたものです。
 7つのプリセット（スラップ、ダブリング、Haas、ピンポン、付点8分＋4分、ダブ・スロー、ショート・アンビエンス）と、
 エコーのタイムライン表示、各プリセットの解説・他プラグインでの再現設定をそのまま持っています。
