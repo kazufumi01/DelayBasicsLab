@@ -1,4 +1,4 @@
-Delay Basics Lab (Beta) — Windows 手動インストール / Manual install
+Delay Basics Lab — Windows 手動インストール / Manual install
 by Johan Plus Kei
 
 ！注意：Windows 版はビルドが通ることのみ確認済みで、実機での動作確認はしていません。

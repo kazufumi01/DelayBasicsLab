@@ -1,6 +1,6 @@
 # Delay Basics Lab
 
-**by Johan Plus Kei** · VST3 / AU / Standalone · 無料ベータ / Free beta
+**by Johan Plus Kei** · VST3 / AU / Standalone · 無料配布中 / Free download
 
 🇯🇵 ディレイの基本用途 7 種を、触りながら学べるプラグイン。ブログ用Webアプリ「[ディレイ基本用途ラボ](https://kazufumi01.github.io/delay-basics-lab/)」のプラグイン版です。
 🇬🇧 A plug-in for learning the seven classic uses of delay hands-on. It is the plug-in version of the browser app [Delay Basics Lab](https://kazufumi01.github.io/delay-basics-lab/en/).
@@ -9,7 +9,7 @@
 
 ## ダウンロード / Download
 
-**[最新版をダウンロード / Download latest (v0.1.1 beta)](https://github.com/kazufumi01/DelayBasicsLab/releases/latest)**
+**[最新版をダウンロード / Download latest (v0.1.1)](https://github.com/kazufumi01/DelayBasicsLab/releases/latest)**
 
 | | 手動インストール（おすすめ）<br>Manual (recommended) | インストーラー<br>Installer |
 |---|---|---|
@@ -23,7 +23,7 @@
 | 不具合・要望 / Bugs & requests | [Issues](https://github.com/kazufumi01/DelayBasicsLab/issues) | [Issues](https://github.com/kazufumi01/DelayBasicsLab/issues) |
 
 > **ご注意 / Notes**
-> - ベータ版です。Mac の Ableton Live で動作確認済み。<br>This is a beta, tested with Ableton Live on Mac.
+> - Mac の Ableton Live で動作確認済み。<br>Tested with Ableton Live on Mac.
 > - ⚠️ Windows 版はビルドのみ確認済みで、実機での動作確認はできていません。<br>The Windows build compiles but has not been tested on real hardware.
 > - Apple の公証・Windows のコード署名をしていないため、初回のみ警告が出ます（回避手順は INSTALL.md）。<br>The builds are not notarized or code-signed, so you will see a one-time warning (see INSTALL.md).
 
