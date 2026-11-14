@@ -1,10 +1,10 @@
 # Delay Basics Lab — インストール方法 / Installation
 
-> **ベータ版です。** Mac の Ableton Live で動作確認済み。
+> Mac の Ableton Live で動作確認済み。
 > **Windows 版はビルドが通ることのみ確認しており、実機での動作確認はできていません。**
 > 不具合は [Issues](https://github.com/kazufumi01/DelayBasicsLab/issues) へお知らせください。
 >
-> **Beta.** Tested with Ableton Live on Mac.
+> Tested with Ableton Live on Mac.
 > **The Windows build compiles but has NOT been tested on a real Windows machine.**
 > Please report problems via [Issues](https://github.com/kazufumi01/DelayBasicsLab/issues).
 
@@ -68,7 +68,7 @@
    - `Delay Basics Lab.component` → `Library/Audio/Plug-Ins/Components`
    - `Delay Basics Lab.vst3` → `Library/Audio/Plug-Ins/VST3`
    - `Delay Basics Lab.app` → `Applications` (optional, standalone)
-3. Run this in Terminal (removes the quarantine flag; this beta is not notarized by Apple):
+3. Run this in Terminal (removes the quarantine flag; this plug-in is not notarized by Apple):
    ```bash
    xattr -dr com.apple.quarantine ~/Library/Audio/Plug-Ins/Components/"Delay Basics Lab.component" ~/Library/Audio/Plug-Ins/VST3/"Delay Basics Lab.vst3" /Applications/"Delay Basics Lab.app"
    ```

@@ -1,4 +1,4 @@
-Delay Basics Lab (Beta) — Mac 手動インストール / Manual install
+Delay Basics Lab — Mac 手動インストール / Manual install
 by Johan Plus Kei
 
 【日本語】
@@ -31,7 +31,7 @@ Requires macOS 11+ (Apple Silicon / Intel)
    - Delay Basics Lab.vst3      -> Library/Audio/Plug-Ins/VST3
    - Delay Basics Lab.app       -> Applications (optional, standalone)
 3. Open Terminal, paste this line and press Return (removes the quarantine flag
-   from this un-notarized beta):
+   from this un-notarized plug-in):
 
 xattr -dr com.apple.quarantine ~/Library/Audio/Plug-Ins/Components/"Delay Basics Lab.component" ~/Library/Audio/Plug-Ins/VST3/"Delay Basics Lab.vst3" /Applications/"Delay Basics Lab.app"
 
