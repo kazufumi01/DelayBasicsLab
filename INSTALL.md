@@ -12,10 +12,10 @@
 
 | ファイル | 内容 |
 |---|---|
-| `DelayBasicsLab-x.x.x-mac.zip` | Mac・手動インストール（おすすめ） |
-| `DelayBasicsLab-x.x.x-mac.pkg` | Mac・インストーラー（ターミナルを使いたくない人向け） |
-| `DelayBasicsLab-x.x.x-win64.zip` | Windows・手動インストール（未検証） |
-| `DelayBasicsLab-x.x.x-win64.exe` | Windows・インストーラー（未検証） |
+| [`DelayBasicsLab-0.1.1-mac.zip`](https://github.com/kazufumi01/DelayBasicsLab/releases/latest/download/DelayBasicsLab-0.1.1-mac.zip) | Mac・手動インストール（おすすめ） |
+| [`DelayBasicsLab-0.1.1-mac.pkg`](https://github.com/kazufumi01/DelayBasicsLab/releases/latest/download/DelayBasicsLab-0.1.1-mac.pkg) | Mac・インストーラー（ターミナルを使いたくない人向け） |
+| [`DelayBasicsLab-0.1.1-win64.zip`](https://github.com/kazufumi01/DelayBasicsLab/releases/latest/download/DelayBasicsLab-0.1.1-win64.zip) | Windows・手動インストール（未検証） |
+| [`DelayBasicsLab-0.1.1-win64.exe`](https://github.com/kazufumi01/DelayBasicsLab/releases/latest/download/DelayBasicsLab-0.1.1-win64.exe) | Windows・インストーラー（未検証） |
 
 ---
 
