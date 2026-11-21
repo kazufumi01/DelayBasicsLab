@@ -7,6 +7,8 @@
 
 **[日本語](#日本語) · [English](#english) · [ダウンロード / Download](#ダウンロード--download) · [開発者向け / For developers](#開発者向け--for-developers)**
 
+🔗 **他の学習ラボ・解説記事 / More learning labs & articles：** [Learning labs（GitHub Pages）](https://kazufumi01.github.io/) ・ [目次・解説記事（Seesaa・日本語）](https://jpk.seesaa.net/article/521891797.html)
+
 ## ダウンロード / Download
 
 **[最新版をダウンロード / Download latest (v0.1.1 beta)](https://github.com/kazufumi01/DelayBasicsLab/releases/latest)**
